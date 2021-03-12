@@ -29,7 +29,7 @@ namespace Business.Handlers
             if (mailToDelete == null)
                 return new BasicResponseInfo(false, HttpStatusCode.NotFound, "Email address not found.");
 
-            _databaseContext.Mail.Remove(mailToDelete);
+            _databaseContext.Remove(mailToDelete);
             await _databaseContext.SaveChangesAsync();
 
             return new BasicResponseInfo(true, HttpStatusCode.OK, "Email address deleted.");

@@ -1,12 +1,12 @@
-﻿using Contracts.Responses;
-using Business.Requests;
+﻿using Business.Requests;
+using Contracts.Responses;
 using EF.SqlServer.Models;
-using Utilities;
 using MediatR;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace Business.Handlers
 {
@@ -42,7 +42,7 @@ namespace Business.Handlers
                 Password = password
             };
 
-            await _databaseContext.SystemUsers.AddAsync(newUser).ConfigureAwait(false);
+            await _databaseContext.AddAsync(newUser).ConfigureAwait(false);
             await _databaseContext.SaveChangesAsync();
 
             return new BasicResponseInfo(true, HttpStatusCode.Created, "User added.");

@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Contracts.Responses;
+using MediatR;
 
 namespace Business.Requests
 {
-    public class CreateMailingGroupRequest
+    public class CreateMailingGroupRequest : BaseRequest, IRequest<BasicResponseInfo>
     {
+        public CreateMailingGroupRequest(string name)
+        {
+            Name = name;
+        }
 
+        public string Name { get; }
+
+        
     }
 }

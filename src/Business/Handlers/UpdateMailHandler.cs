@@ -27,6 +27,15 @@ namespace Business.Handlers
             if (_mailValidatorUtility.ValidateMail(request.Address))
                 return new BasicResponseInfo(false, HttpStatusCode.BadRequest, "Invalid email address.");
 
+            var isAddressAlreadyExists = _databaseContext
+                .Mail
+                .Where(x => x.MailingGroup.SystemUserId == request.UserId)
+                .Where(x => x.Address == request.Address)
+                .Any();
+
+            if (isAddressAlreadyExists)
+                return new BasicResponseInfo(false, HttpStatusCode.Conflict, "Email address already exists.");
+
             var mailToUpdate = _databaseContext
                 .Mail
                 .Where(x => x.MailingGroup.SystemUserId == request.UserId)

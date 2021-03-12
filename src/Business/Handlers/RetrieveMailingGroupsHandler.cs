@@ -1,6 +1,5 @@
 ﻿using Business.Requests;
 using Contracts.Dto;
-using Contracts.Models;
 using Contracts.Responses;
 using EF.SqlServer.Models;
 using MediatR;

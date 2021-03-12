@@ -1,7 +1,6 @@
-﻿using Contracts.Responses;
-using Business.Requests;
+﻿using Business.Requests;
+using Contracts.Responses;
 using EF.SqlServer.Models;
-using Utilities;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -13,6 +12,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace Business.Handlers
 {

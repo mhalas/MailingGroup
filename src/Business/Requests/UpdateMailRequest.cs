@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Business.Requests
 {
-    public class UpdateMailRequest : IRequest<BasicResponseInfo>
+    public class UpdateMailRequest : BaseRequest, IRequest<BasicResponseInfo>
     {
         public UpdateMailRequest(int mailId, string address)
         {
@@ -17,7 +17,5 @@ namespace Business.Requests
 
         [JsonProperty(Required = Required.Always)]
         public string Address { get; }
-
-        public int UserId { get; set; }
     }
 }

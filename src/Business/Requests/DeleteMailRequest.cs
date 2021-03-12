@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Business.Requests
 {
-    public class DeleteMailRequest : IRequest<BasicResponseInfo>
+    public class DeleteMailRequest : BaseRequest, IRequest<BasicResponseInfo>
     {
         public DeleteMailRequest(int mailId)
         {
@@ -13,7 +13,5 @@ namespace Business.Requests
 
         [JsonProperty(Required = Required.Always)]
         public int MailId { get; }
-
-        public int UserId { get; set; }
     }
 }

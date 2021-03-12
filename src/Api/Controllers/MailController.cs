@@ -56,10 +56,8 @@ namespace Api.Controllers
                 if (userId == null)
                     return Unauthorized();
 
-                var request = new UpdateMailRequest(id, emailAddress)
-                {
-                    UserId = userId.Value
-                };
+                var request = new UpdateMailRequest(id, emailAddress);
+                request.SetUserId(userId.Value);
 
                 var result = await _mediator.Send(request);
                 return result.GetResult();
@@ -82,10 +80,8 @@ namespace Api.Controllers
                 if (userId == null)
                     return Unauthorized();
 
-                var request = new DeleteMailRequest(id)
-                {
-                    UserId = userId.Value
-                };
+                var request = new DeleteMailRequest(id);
+                request.SetUserId(userId.Value);
 
                 var result = await _mediator.Send(request);
                 return new OkResult();
@@ -108,7 +104,7 @@ namespace Api.Controllers
                 if (userId == null)
                     return Unauthorized();
 
-                request.UserId = userId.Value;
+                request.SetUserId(userId.Value);
 
                 var result = await _mediator.Send(request);
                 return new OkObjectResult(result);

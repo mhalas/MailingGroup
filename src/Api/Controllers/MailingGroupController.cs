@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using System;
+using System.Linq;
 
 namespace Api.Controllers
 {
@@ -15,8 +16,6 @@ namespace Api.Controllers
         private static ILogger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMediator _mediator;
-
-        private int _userId = 1;
 
         public MailingGroupController(IMediator mediator)
         {
@@ -30,6 +29,12 @@ namespace Api.Controllers
             Logger.Trace($"Executing '{nameof(CreateMailingGroup)}'.");
             try
             {
+                var userId = GetUserId();
+                if (userId == null)
+                    return Unauthorized();
+
+                request.SetUserId(userId.Value);
+
                 var id = _mediator.Send(request);
                 return new CreatedResult("", id);
             }
@@ -47,6 +52,12 @@ namespace Api.Controllers
 
             try
             {
+                var userId = GetUserId();
+                if (userId == null)
+                    return Unauthorized();
+
+                request.SetUserId(userId.Value);
+
                 var id = _mediator.Send(request);
                 return new OkResult();
             }
@@ -64,6 +75,12 @@ namespace Api.Controllers
 
             try
             {
+                var userId = GetUserId();
+                if (userId == null)
+                    return Unauthorized();
+
+                request.SetUserId(userId.Value);
+
                 var id = _mediator.Send(request);
                 return new OkResult();
             }
@@ -75,12 +92,18 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult RetrieveMailingGroups(RetrieveMailingGroupRequest request)
+        public IActionResult RetrieveMailingGroups(RetrieveMailingGroupsRequest request)
         {
             Logger.Trace($"Executing '{nameof(RetrieveMailingGroups)}'.");
 
             try
             {
+                var userId = GetUserId();
+                if (userId == null)
+                    return Unauthorized();
+
+                request.SetUserId(userId.Value);
+
                 var result = _mediator.Send(request);
                 return new OkObjectResult(result);
             }
@@ -89,6 +112,17 @@ namespace Api.Controllers
                 Logger.Error(ex, "Unexpected error.");
                 throw;
             }
+        }
+
+        private int? GetUserId()
+        {
+            if (HttpContext.User.HasClaim(x => x.Type == "UserId") &&
+                int.TryParse(HttpContext.User.Claims.First(x => x.Type == "UserId").Value, out int userId))
+            {
+                return userId;
+            }
+
+            return null;
         }
     }
 }

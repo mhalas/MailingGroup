@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Business.Requests
 {
-    public class RetrieveMailsRequest : IRequest<IEnumerable<IMail>>
+    public class RetrieveMailsRequest : BaseRequest, IRequest<IEnumerable<IMail>>
     {
         public RetrieveMailsRequest(int? mailingGroupId = null)
         {
@@ -15,7 +15,5 @@ namespace Business.Requests
 
         [JsonProperty(Required = Required.Default)]
         public int? MailingGroupId { get; }
-
-        public int UserId { get; set; }
     }
 }
