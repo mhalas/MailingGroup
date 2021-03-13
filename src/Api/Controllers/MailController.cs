@@ -31,7 +31,7 @@ namespace Api.Controllers
 
             try
             {
-                var userId = GetUserId();
+                var userId = HttpContext.GetUserId();
                 if (userId == null)
                     return Unauthorized();
 
@@ -52,7 +52,7 @@ namespace Api.Controllers
 
             try
             {
-                var userId = GetUserId();
+                var userId = HttpContext.GetUserId();
                 if (userId == null)
                     return Unauthorized();
 
@@ -76,7 +76,7 @@ namespace Api.Controllers
 
             try
             {
-                var userId = GetUserId();
+                var userId = HttpContext.GetUserId();
                 if (userId == null)
                     return Unauthorized();
 
@@ -100,7 +100,7 @@ namespace Api.Controllers
 
             try
             {
-                var userId = GetUserId();
+                var userId = HttpContext.GetUserId();
                 if (userId == null)
                     return Unauthorized();
 
@@ -114,17 +114,6 @@ namespace Api.Controllers
                 Logger.Error(ex, "Unexpected error.");
                 throw;
             }
-        }
-
-        private int? GetUserId()
-        {
-            if (HttpContext.User.HasClaim(x => x.Type == "UserId") &&
-                int.TryParse(HttpContext.User.Claims.First(x => x.Type == "UserId").Value, out int userId))
-            {
-                return userId;
-            }
-
-            return null;
         }
     }
 }
