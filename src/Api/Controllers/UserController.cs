@@ -1,4 +1,5 @@
 ﻿using Api.Extensions;
+using Business.Handlers;
 using Business.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -23,12 +24,6 @@ namespace Api.Controllers
             _mediator = mediator;
         }
 
-        /// <summary>
-        /// Useful link
-        /// https://en.wikipedia.org/wiki/Salt_(cryptography)
-        /// https://web.archive.org/web/20190319133731/http://www.obviex.com:80/Samples/Hash.aspx
-        /// </summary>
-        /// <returns></returns>
         [HttpPost]
         [Route("register")]
 
@@ -43,7 +38,7 @@ namespace Api.Controllers
             }
             catch(Exception ex)
             {
-                Logger.Error(ex, "Unexpected error.");
+                Logger.Error(ex, $"Unexpected error thrown while executing '{nameof(RegisterUserHandler)}'.");
                 throw;
             }
         }
@@ -61,7 +56,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unexpected error.");
+                Logger.Error(ex, $"Unexpected error thrown while executing '{nameof(LoginUserHandler)}'.");
                 throw;
             }
         }

@@ -1,4 +1,5 @@
 ﻿using Api.Extensions;
+using Business.Handlers;
 using Business.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -28,18 +29,18 @@ namespace Api.Controllers
         {
             Logger.Trace($"Executing '{nameof(CreateEmailAddress)}'.");
 
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+                return Unauthorized();
+
             try
             {
-                var userId = HttpContext.GetUserId();
-                if (userId == null)
-                    return Unauthorized();
-
                 var result = await _mediator.Send(request);
                 return result.GetResult();
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unexpected error.");
+                Logger.Error(ex, $"Unexpected error thrown while executing '{nameof(CreateEmailAddressHandler)}'.");
                 throw;
             }
         }
@@ -49,21 +50,21 @@ namespace Api.Controllers
         {
             Logger.Trace($"Executing '{nameof(UpdateEmailAddress)}'.");
 
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            var request = new UpdateEmailAddressRequest(id, emailAddress);
+            request.SetUserId(userId.Value);
+
             try
             {
-                var userId = HttpContext.GetUserId();
-                if (userId == null)
-                    return Unauthorized();
-
-                var request = new UpdateEmailAddressRequest(id, emailAddress);
-                request.SetUserId(userId.Value);
-
                 var result = await _mediator.Send(request);
                 return result.GetResult();
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unexpected error.");
+                Logger.Error(ex, $"Unexpected error thrown while executing '{nameof(UpdateEmailAddressHandler)}'.");
                 throw;
             }
         }
@@ -73,12 +74,12 @@ namespace Api.Controllers
         {
             Logger.Trace($"Executing '{nameof(DeleteEmailAddress)}'.");
 
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+                return Unauthorized();
+
             try
             {
-                var userId = HttpContext.GetUserId();
-                if (userId == null)
-                    return Unauthorized();
-
                 var request = new DeleteEmailAddressRequest(id);
                 request.SetUserId(userId.Value);
 
@@ -87,7 +88,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unexpected error.");
+                Logger.Error(ex, $"Unexpected error thrown while executing '{nameof(DeleteEmailAddressHandler)}'.");
                 throw;
             }
         }
@@ -97,20 +98,20 @@ namespace Api.Controllers
         {
             Logger.Trace($"Executing '{nameof(RetrieveEmailAddress)}'.");
 
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+                return Unauthorized();
+            
+            request.SetUserId(userId.Value);
+
             try
             {
-                var userId = HttpContext.GetUserId();
-                if (userId == null)
-                    return Unauthorized();
-
-                request.SetUserId(userId.Value);
-
                 var result = await _mediator.Send(request);
                 return new OkObjectResult(result);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unexpected error.");
+                Logger.Error(ex, $"Unexpected error thrown while executing '{nameof(RetrieveEmailAddressesHandler)}'.");
                 throw;
             }
         }

@@ -1,11 +1,11 @@
 ﻿using Api.Extensions;
+using Business.Handlers;
 using Business.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using System;
-using System.Linq;
 
 namespace Api.Controllers
 {
@@ -28,20 +28,21 @@ namespace Api.Controllers
         public IActionResult CreateMailingGroup(CreateMailingGroupRequest request)
         {
             Logger.Trace($"Executing '{nameof(CreateMailingGroup)}'.");
+
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            request.SetUserId(userId.Value);
+
             try
             {
-                var userId = HttpContext.GetUserId();
-                if (userId == null)
-                    return Unauthorized();
-
-                request.SetUserId(userId.Value);
-
                 var id = _mediator.Send(request);
                 return new CreatedResult("", id);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unexpected error.");
+                Logger.Error(ex, $"Unexpected error thrown while executing '{nameof(CreateMailingGroupHandler)}'.");
                 throw;
             }
         }
@@ -51,20 +52,20 @@ namespace Api.Controllers
         {
             Logger.Trace($"Executing '{nameof(UpdateMailingGroup)}'.");
 
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            request.SetUserId(userId.Value);
+
             try
             {
-                var userId = HttpContext.GetUserId();
-                if (userId == null)
-                    return Unauthorized();
-
-                request.SetUserId(userId.Value);
-
                 var id = _mediator.Send(request);
                 return new OkResult();
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unexpected error.");
+                Logger.Error(ex, $"Unexpected error thrown while executing '{nameof(UpdateMailingGroupHandler)}'.");
                 throw;
             }
         }
@@ -74,20 +75,20 @@ namespace Api.Controllers
         {
             Logger.Trace($"Executing '{nameof(DeleteMailingGroup)}'.");
 
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            request.SetUserId(userId.Value);
+
             try
             {
-                var userId = HttpContext.GetUserId();
-                if (userId == null)
-                    return Unauthorized();
-
-                request.SetUserId(userId.Value);
-
                 var id = _mediator.Send(request);
                 return new OkResult();
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unexpected error.");
+                Logger.Error(ex, $"Unexpected error thrown while executing '{nameof(DeleteMailingGroupHandler)}'.");
                 throw;
             }
         }
@@ -97,20 +98,20 @@ namespace Api.Controllers
         {
             Logger.Trace($"Executing '{nameof(RetrieveMailingGroups)}'.");
 
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            request.SetUserId(userId.Value);
+
             try
             {
-                var userId = HttpContext.GetUserId();
-                if (userId == null)
-                    return Unauthorized();
-
-                request.SetUserId(userId.Value);
-
                 var result = _mediator.Send(request);
                 return new OkObjectResult(result);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unexpected error.");
+                Logger.Error(ex, $"Unexpected error thrown while executing '{nameof(RetrieveMailingGroupsHandler)}'.");
                 throw;
             }
         }
