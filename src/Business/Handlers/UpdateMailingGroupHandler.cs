@@ -36,12 +36,12 @@ namespace Business.Handlers
                 .SingleOrDefault();
 
             if (mailingGroupToUpdate == null)
-                return new BasicResponseInfo(false, HttpStatusCode.NotFound, "Email address not found.");
+                return new BasicResponseInfo(false, HttpStatusCode.NotFound, "Mailing group not found.");
 
             mailingGroupToUpdate.Name = request.Name;
-            await _databaseContext.SaveChangesAsync();
+            await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
 
-            return new BasicResponseInfo(true, HttpStatusCode.OK, "Email address updated.");
+            return new BasicResponseInfo(true, HttpStatusCode.OK, "Mailing group updated.");
         }
     }
 }

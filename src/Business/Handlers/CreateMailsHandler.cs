@@ -1,7 +1,7 @@
-﻿using Contracts.Responses;
-using Business.Requests;
+﻿using Business.Requests;
+using Contracts.Responses;
+using Contracts.Utility;
 using EF.SqlServer.Models;
-using Utilities;
 using MediatR;
 using System;
 using System.Linq;
@@ -14,10 +14,10 @@ namespace Business.Handlers
     public class CreateMailsHandler : IRequestHandler<CreateMailsRequest, BasicResponseInfo>
     {
         private readonly DatabaseContext _databaseContext;
-        private readonly EmailAddressValidatorUtility _emailAddressValidatorUtility;
+        private readonly IEmailAddressValidatorUtility _emailAddressValidatorUtility;
 
         public CreateMailsHandler(DatabaseContext databaseContext,
-            EmailAddressValidatorUtility mailValidatorUtility)
+            IEmailAddressValidatorUtility mailValidatorUtility)
         {
             _databaseContext = databaseContext;
             _emailAddressValidatorUtility = mailValidatorUtility;
@@ -25,6 +25,11 @@ namespace Business.Handlers
 
         public async Task<BasicResponseInfo> Handle(CreateMailsRequest request, CancellationToken cancellationToken)
         {
+            if(!request.Addresses.Any() || request.Addresses.Any(x => string.IsNullOrEmpty(x)) || request.MailingGroupId == default(int))
+                return new BasicResponseInfo(false,
+                    HttpStatusCode.BadRequest,
+                    $"Required Addresses and MailingGroupId.");
+
             var addressesNotValid = request.Addresses.Where(x => !_emailAddressValidatorUtility.ValidateMail(x));
             if (addressesNotValid.Any())
                 return new BasicResponseInfo(false,
@@ -45,15 +50,17 @@ namespace Business.Handlers
 
             var addressesToAdd = request
                 .Addresses
-                .Except(addressesAlreadyAdded)
                 .Select(emailAddress => new Mail()
-            {
-                MailingGroupId = request.MailingGroupId,
-                Address = emailAddress,
-            });
+                {
+                    MailingGroupId = request.MailingGroupId,
+                    Address = emailAddress,
+                })
+                .ToList();
 
-            await _databaseContext.AddRangeAsync(addressesToAdd);
-            await _databaseContext.SaveChangesAsync();
+            foreach (var address in addressesToAdd)
+                await _databaseContext.AddAsync(address).ConfigureAwait(false);
+
+            await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
 
             if (addressesAlreadyAdded.Any())
                 return new BasicResponseInfo(true, HttpStatusCode.Created, $"Success. Added addresses: {string.Join(", ", addressesToAdd)}, and ignored already added addresses: {string.Join(", ", addressesAlreadyAdded)}");

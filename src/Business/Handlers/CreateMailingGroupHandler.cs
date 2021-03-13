@@ -20,6 +20,11 @@ namespace Business.Handlers
 
         public async Task<BasicResponseInfo> Handle(CreateMailingGroupRequest request, CancellationToken cancellationToken)
         {
+            if(string.IsNullOrEmpty(request.Name))
+                return new BasicResponseInfo(false,
+                    HttpStatusCode.BadRequest,
+                    $"Mailing group name is undefined.");
+
             var existingMailingGroup = _databaseContext
                 .MailingGroups
                 .Where(x => x.SystemUserId == request.UserId)
@@ -36,8 +41,8 @@ namespace Business.Handlers
                 SystemUserId = request.UserId
             };
 
-            await _databaseContext.AddAsync(newMailingGroup);
-            await _databaseContext.SaveChangesAsync();
+            await _databaseContext.AddAsync(newMailingGroup).ConfigureAwait(false);
+            await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
 
             return new BasicResponseInfo(true,
                 HttpStatusCode.Created,

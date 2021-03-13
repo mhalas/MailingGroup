@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Contracts.Utility;
+using System;
 using System.Security.Cryptography;
 
 namespace Utilities
 {
-    public class UserPasswordUtility
+    public class UserPasswordUtility: IUserPasswordUtility
     {
         private readonly int _iterations;
         private readonly int _keySize;

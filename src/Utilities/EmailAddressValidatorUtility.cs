@@ -1,4 +1,5 @@
-﻿using System.Net.Mail;
+﻿using Contracts.Utility;
+using System.Net.Mail;
 
 namespace Utilities
 {
@@ -10,7 +11,7 @@ namespace Utilities
     /// https://haacked.com/archive/2007/08/21/i-knew-how-to-validate-an-email-address-until-i.aspx/
     /// https://en.wikipedia.org/wiki/Email_address#Local-part
     /// </summary>
-    public class EmailAddressValidatorUtility
+    public class EmailAddressValidatorUtility: IEmailAddressValidatorUtility
     {
         public bool ValidateMail(string emailAddress)
         {

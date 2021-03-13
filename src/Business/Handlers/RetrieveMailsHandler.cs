@@ -1,15 +1,16 @@
 ﻿using Business.Requests;
 using Contracts.Dto;
+using Contracts.Responses;
 using EF.SqlServer.Models;
 using MediatR;
-using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Business.Handlers
 {
-    public class RetrieveMailsHandler : IRequestHandler<RetrieveMailsRequest, IEnumerable<RetrieveMailDto>>
+    public class RetrieveMailsHandler : IRequestHandler<RetrieveMailsRequest, RetrieveEmailAddressesResponse>
     {
         private readonly DatabaseContext _databaseContext;
 
@@ -18,7 +19,7 @@ namespace Business.Handlers
             _databaseContext = databaseContext;
         }
 
-        public Task<IEnumerable<RetrieveMailDto>> Handle(RetrieveMailsRequest request, CancellationToken cancellationToken)
+        public Task<RetrieveEmailAddressesResponse> Handle(RetrieveMailsRequest request, CancellationToken cancellationToken)
         {
             var query = _databaseContext
                 .Mail
@@ -27,9 +28,14 @@ namespace Business.Handlers
             if (request.MailingGroupId.HasValue)
                 query.Where(x => x.MailingGroupId == request.MailingGroupId);
 
-            return Task.FromResult(query
+            var results = query
                 .ToList()
-                .Select(x=> new RetrieveMailDto(x.Id, x.MailingGroupId, x.Address)));
+                .Select(x => new RetrieveEmailAddressDto(x.Id, x.MailingGroupId, x.Address));
+
+            return Task.FromResult(new RetrieveEmailAddressesResponse(true, 
+                HttpStatusCode.OK, 
+                string.Empty, 
+                results));
         }
     }
 }

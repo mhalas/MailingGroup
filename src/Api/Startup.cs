@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Contracts.Utility;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Api
 {
@@ -36,8 +38,9 @@ namespace Api
             services.AddSwaggerGen();
 
             services.AddSingleton(Configuration);
-            services.AddSingleton<SaltGeneratorUtility>();
-            services.AddSingleton<UserPasswordUtility>(new UserPasswordUtility(int.Parse(Configuration["PasswordGenerator:Iterations"]), int.Parse(Configuration["PasswordGenerator:KeySize"])));
+            services.AddSingleton<ISaltGeneratorUtility, SaltGeneratorUtility>();
+            services.AddSingleton<IUserPasswordUtility>(new UserPasswordUtility(int.Parse(Configuration["PasswordGenerator:Iterations"]), int.Parse(Configuration["PasswordGenerator:KeySize"])));
+            services.AddSingleton<JwtSecurityTokenHandler>();
 
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));

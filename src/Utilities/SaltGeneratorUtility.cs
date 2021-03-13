@@ -1,8 +1,9 @@
-﻿using System.Security.Cryptography;
+﻿using Contracts.Utility;
+using System.Security.Cryptography;
 
 namespace Utilities
 {
-    public class SaltGeneratorUtility
+    public class SaltGeneratorUtility: ISaltGeneratorUtility
     {
         private const int SALT_LENGTH = 16;
 

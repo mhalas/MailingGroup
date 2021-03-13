@@ -1,5 +1,6 @@
 ﻿using Business.Requests;
 using Contracts.Responses;
+using Contracts.Utility;
 using EF.SqlServer.Models;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -12,23 +13,25 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Utilities;
 
 namespace Business.Handlers
 {
     public class LoginUserHandler : IRequestHandler<LoginUserRequest, LoginUserResponse>
     {
         private readonly DatabaseContext _databaseContext;
-        private readonly UserPasswordUtility _userPasswordUtility;
+        private readonly IUserPasswordUtility _userPasswordUtility;
         private readonly IConfiguration _configuration;
+        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
 
         public LoginUserHandler(DatabaseContext databaseContext,
-            UserPasswordUtility userPasswordUtility,
-            IConfiguration configuration)
+            IUserPasswordUtility userPasswordUtility,
+            IConfiguration configuration,
+            JwtSecurityTokenHandler jwtSecurityTokenHandler)
         {
             _databaseContext = databaseContext;
             _userPasswordUtility = userPasswordUtility;
             _configuration = configuration;
+            _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
         }
 
 
@@ -55,7 +58,7 @@ namespace Business.Handlers
                 expires: DateTime.Now.AddMinutes(120),
                 signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256));
 
-            return Task.FromResult(new LoginUserResponse(new JwtSecurityTokenHandler().WriteToken(token), token.ValidTo, true, HttpStatusCode.OK, string.Empty));
+            return Task.FromResult(new LoginUserResponse(_jwtSecurityTokenHandler.WriteToken(token), token.ValidTo, true, HttpStatusCode.OK, string.Empty));
         }
     }
 }

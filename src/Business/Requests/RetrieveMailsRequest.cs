@@ -1,11 +1,12 @@
 ﻿using Contracts.Dto;
+using Contracts.Responses;
 using MediatR;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace Business.Requests
 {
-    public class RetrieveMailsRequest : BaseRequest, IRequest<IEnumerable<RetrieveMailDto>>
+    public class RetrieveMailsRequest : BaseRequest, IRequest<RetrieveEmailAddressesResponse>
     {
         public RetrieveMailsRequest(int? mailingGroupId = null)
         {

@@ -1,5 +1,6 @@
 ﻿using Contracts.Responses;
 using MediatR;
+using Newtonsoft.Json;
 
 namespace Business.Requests
 {
@@ -10,8 +11,7 @@ namespace Business.Requests
             Name = name;
         }
 
+        [JsonProperty(Required = Required.Always)]
         public string Name { get; }
-
-        
     }
 }

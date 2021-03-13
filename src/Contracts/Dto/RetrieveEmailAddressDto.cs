@@ -1,9 +1,9 @@
 ﻿namespace Contracts.Dto
 {
-    public class RetrieveMailDto
+    public class RetrieveEmailAddressDto
     {
 
-        public RetrieveMailDto(int id, int mailingGroupId, string address)
+        public RetrieveEmailAddressDto(int id, int mailingGroupId, string address)
         {
             Id = id;
             MailingGroupId = mailingGroupId;

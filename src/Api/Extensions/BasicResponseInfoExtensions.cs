@@ -23,7 +23,7 @@ namespace Api.Extensions
             if (response.StatusCode == HttpStatusCode.OK)
                 return new OkObjectResult(response);
 
-            return new BadRequestResult();
+            return new BadRequestObjectResult(response.Message);
         }
     }
 }

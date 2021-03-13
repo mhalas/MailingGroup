@@ -20,6 +20,9 @@ namespace Business.Handlers
 
         public async Task<BasicResponseInfo> Handle(DeleteMailRequest request, CancellationToken cancellationToken)
         {
+            if(request.MailId == default(int))
+                return new BasicResponseInfo(false, HttpStatusCode.BadRequest, "Required email address.");
+
             var mailToDelete = _databaseContext
                 .Mail
                 .Where(x => x.MailingGroup.SystemUserId == request.UserId)
@@ -30,7 +33,7 @@ namespace Business.Handlers
                 return new BasicResponseInfo(false, HttpStatusCode.NotFound, "Email address not found.");
 
             _databaseContext.Remove(mailToDelete);
-            await _databaseContext.SaveChangesAsync();
+            await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
 
             return new BasicResponseInfo(true, HttpStatusCode.OK, "Email address deleted.");
         }

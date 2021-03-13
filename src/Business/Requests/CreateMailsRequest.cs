@@ -1,5 +1,6 @@
 ﻿using Contracts.Responses;
 using MediatR;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace Business.Requests
@@ -15,6 +16,7 @@ namespace Business.Requests
 
         public int MailingGroupId { get; }
 
+        [JsonProperty(Required = Required.Always)]
         public IEnumerable<string> Addresses { get; }
     }
 }
