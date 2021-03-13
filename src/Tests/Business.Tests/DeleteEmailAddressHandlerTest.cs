@@ -29,23 +29,23 @@ namespace Business.Tests
                 Id = 2,
                 SystemUserId = 2,
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 1,
                 MailingGroupId = 1
                 
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 2,
                 MailingGroupId = 1
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 3,
                 MailingGroupId = 2
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 4,
                 MailingGroupId = 2
@@ -53,16 +53,16 @@ namespace Business.Tests
 
             databaseContext.SaveChanges();
 
-            var request = new DeleteMailRequest(emailAddressIdToDelete);
+            var request = new DeleteEmailAddressRequest(emailAddressIdToDelete);
             request.SetUserId(userId);
 
-            var result = await new DeleteMailHandler(databaseContext).Handle(request, cancellationToken);
+            var result = await new DeleteEmailAddressHandler(databaseContext).Handle(request, cancellationToken);
 
             Assert.Multiple(() =>
             {
                 Assert.IsTrue(result.Success);
                 Assert.AreEqual(result.StatusCode, HttpStatusCode.OK);
-                Assert.IsTrue(!databaseContext.Mail.Any(x => x.Id == emailAddressIdToDelete));
+                Assert.IsTrue(!databaseContext.EmailAddress.Any(x => x.Id == emailAddressIdToDelete));
             });
         }
 
@@ -82,23 +82,23 @@ namespace Business.Tests
                 Id = 2,
                 SystemUserId = 2,
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 1,
                 MailingGroupId = 1
 
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 2,
                 MailingGroupId = 1
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 3,
                 MailingGroupId = 2
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 4,
                 MailingGroupId = 2
@@ -106,10 +106,10 @@ namespace Business.Tests
 
             databaseContext.SaveChanges();
 
-            var request = new DeleteMailRequest(emailAddressIdToDelete);
+            var request = new DeleteEmailAddressRequest(emailAddressIdToDelete);
             request.SetUserId(userId);
 
-            var result = await new DeleteMailHandler(databaseContext).Handle(request, cancellationToken);
+            var result = await new DeleteEmailAddressHandler(databaseContext).Handle(request, cancellationToken);
 
             Assert.Multiple(() =>
             {
@@ -135,23 +135,23 @@ namespace Business.Tests
                 Id = 2,
                 SystemUserId = 2,
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 1,
                 MailingGroupId = 1
 
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 2,
                 MailingGroupId = 1
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 3,
                 MailingGroupId = 2
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 4,
                 MailingGroupId = 2
@@ -159,10 +159,10 @@ namespace Business.Tests
 
             databaseContext.SaveChanges();
 
-            var request = new DeleteMailRequest(emailAddressIdToDelete);
+            var request = new DeleteEmailAddressRequest(emailAddressIdToDelete);
             request.SetUserId(userId);
 
-            var result = await new DeleteMailHandler(databaseContext).Handle(request, cancellationToken);
+            var result = await new DeleteEmailAddressHandler(databaseContext).Handle(request, cancellationToken);
 
             Assert.Multiple(() =>
             {

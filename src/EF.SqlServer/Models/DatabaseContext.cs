@@ -17,7 +17,7 @@ namespace EF.SqlServer.Models
         {
         }
 
-        public virtual DbSet<Mail> Mail { get; set; }
+        public virtual DbSet<EmailAddress> EmailAddress { get; set; }
         public virtual DbSet<MailingGroup> MailingGroups { get; set; }
         public virtual DbSet<SystemUser> SystemUsers { get; set; }
 
@@ -25,14 +25,14 @@ namespace EF.SqlServer.Models
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-            modelBuilder.Entity<Mail>(entity =>
+            modelBuilder.Entity<EmailAddress>(entity =>
             {
-                entity.HasIndex(e => new { e.Address, e.MailingGroupId }, "Unique_Mail")
+                entity.HasIndex(e => new { e.Value, e.MailingGroupId }, "Unique_EmailAddress")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.Address)
+                entity.Property(e => e.Value)
                     .IsRequired()
                     .HasMaxLength(256);
 

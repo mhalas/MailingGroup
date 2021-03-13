@@ -29,23 +29,23 @@ namespace Business.Tests
                 Id = 2,
                 SystemUserId = 2,
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 1,
                 MailingGroupId = 1
 
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 2,
                 MailingGroupId = 1
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 3,
                 MailingGroupId = 2
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 4,
                 MailingGroupId = 2
@@ -62,7 +62,7 @@ namespace Business.Tests
             {
                 Assert.IsTrue(result.Success);
                 Assert.AreEqual(result.StatusCode, HttpStatusCode.OK);
-                Assert.IsFalse(databaseContext.Mail.Any(x => x.MailingGroupId == mailingGroupIdToDelete));
+                Assert.IsFalse(databaseContext.EmailAddress.Any(x => x.MailingGroupId == mailingGroupIdToDelete));
                 Assert.IsFalse(databaseContext.MailingGroups.Any(x => x.Id == mailingGroupIdToDelete));
             });
         }
@@ -83,23 +83,23 @@ namespace Business.Tests
                 Id = 2,
                 SystemUserId = 2,
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 1,
                 MailingGroupId = 1
 
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 2,
                 MailingGroupId = 1
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 3,
                 MailingGroupId = 2
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 4,
                 MailingGroupId = 2
@@ -136,23 +136,23 @@ namespace Business.Tests
                 Id = 2,
                 SystemUserId = 2,
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 1,
                 MailingGroupId = 1
 
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 2,
                 MailingGroupId = 1
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 3,
                 MailingGroupId = 2
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 4,
                 MailingGroupId = 2

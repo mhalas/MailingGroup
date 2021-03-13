@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Api.Controllers
@@ -13,21 +12,21 @@ namespace Api.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class MailController : ControllerBase
+    public class EmailAddressController : ControllerBase
     {
         private static ILogger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMediator _mediator;
 
-        public MailController(IMediator mediator)
+        public EmailAddressController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateMails(CreateMailsRequest request)
+        public async Task<IActionResult> CreateEmailAddress(CreateEmailAddressRequest request)
         {
-            Logger.Trace($"Executing '{nameof(CreateMails)}'.");
+            Logger.Trace($"Executing '{nameof(CreateEmailAddress)}'.");
 
             try
             {
@@ -46,9 +45,9 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateMail(int id, [FromBody]string emailAddress)
+        public async Task<IActionResult> UpdateEmailAddress(int id, [FromBody]string emailAddress)
         {
-            Logger.Trace($"Executing '{nameof(UpdateMail)}'.");
+            Logger.Trace($"Executing '{nameof(UpdateEmailAddress)}'.");
 
             try
             {
@@ -56,7 +55,7 @@ namespace Api.Controllers
                 if (userId == null)
                     return Unauthorized();
 
-                var request = new UpdateMailRequest(id, emailAddress);
+                var request = new UpdateEmailAddressRequest(id, emailAddress);
                 request.SetUserId(userId.Value);
 
                 var result = await _mediator.Send(request);
@@ -70,9 +69,9 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMail(int id)
+        public async Task<IActionResult> DeleteEmailAddress(int id)
         {
-            Logger.Trace($"Executing '{nameof(DeleteMail)}'.");
+            Logger.Trace($"Executing '{nameof(DeleteEmailAddress)}'.");
 
             try
             {
@@ -80,7 +79,7 @@ namespace Api.Controllers
                 if (userId == null)
                     return Unauthorized();
 
-                var request = new DeleteMailRequest(id);
+                var request = new DeleteEmailAddressRequest(id);
                 request.SetUserId(userId.Value);
 
                 var result = await _mediator.Send(request);
@@ -94,9 +93,9 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> RetrieveMails(RetrieveMailsRequest request)
+        public async Task<IActionResult> RetrieveEmailAddress(RetrieveMailsRequest request)
         {
-            Logger.Trace($"Executing '{nameof(RetrieveMails)}'.");
+            Logger.Trace($"Executing '{nameof(RetrieveEmailAddress)}'.");
 
             try
             {

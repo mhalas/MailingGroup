@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace EF.SqlServer.Models
 {
-    public partial class Mail
+    public partial class EmailAddress
     {
         public int Id { get; set; }
-        public string Address { get; set; }
+        public string Value { get; set; }
         public int MailingGroupId { get; set; }
 
         public virtual MailingGroup MailingGroup { get; set; }

@@ -32,7 +32,7 @@ namespace Business.Handlers
             if (mailingGroupToDelete == null)
                 return new BasicResponseInfo(false, HttpStatusCode.NotFound, "Mailing group not found.");
 
-            var emailAddresses = _databaseContext.Mail.Where(x => x.MailingGroupId == request.MailingGroupId);
+            var emailAddresses = _databaseContext.EmailAddress.Where(x => x.MailingGroupId == request.MailingGroupId);
             _databaseContext.RemoveRange(emailAddresses);
 
             _databaseContext.Remove(mailingGroupToDelete);

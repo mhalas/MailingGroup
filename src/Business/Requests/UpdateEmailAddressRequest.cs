@@ -4,9 +4,9 @@ using Newtonsoft.Json;
 
 namespace Business.Requests
 {
-    public class UpdateMailRequest : BaseRequest, IRequest<BasicResponseInfo>
+    public class UpdateEmailAddressRequest : BaseRequest, IRequest<BasicResponseInfo>
     {
-        public UpdateMailRequest(int mailId, string address)
+        public UpdateEmailAddressRequest(int mailId, string address)
         {
             MailId = mailId;
             Address = address;

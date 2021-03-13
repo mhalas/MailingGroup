@@ -11,19 +11,19 @@ using System.Threading.Tasks;
 
 namespace Business.Handlers
 {
-    public class CreateMailsHandler : IRequestHandler<CreateMailsRequest, BasicResponseInfo>
+    public class CreateEmailAddressHandler : IRequestHandler<CreateEmailAddressRequest, BasicResponseInfo>
     {
         private readonly DatabaseContext _databaseContext;
         private readonly IEmailAddressValidatorUtility _emailAddressValidatorUtility;
 
-        public CreateMailsHandler(DatabaseContext databaseContext,
+        public CreateEmailAddressHandler(DatabaseContext databaseContext,
             IEmailAddressValidatorUtility mailValidatorUtility)
         {
             _databaseContext = databaseContext;
             _emailAddressValidatorUtility = mailValidatorUtility;
         }
 
-        public async Task<BasicResponseInfo> Handle(CreateMailsRequest request, CancellationToken cancellationToken)
+        public async Task<BasicResponseInfo> Handle(CreateEmailAddressRequest request, CancellationToken cancellationToken)
         {
             if(!request.Addresses.Any() || request.Addresses.Any(x => string.IsNullOrEmpty(x)) || request.MailingGroupId == default(int))
                 return new BasicResponseInfo(false,
@@ -37,10 +37,10 @@ namespace Business.Handlers
                     $"The operation has been rolled back. Invalid email addresses: {string.Join(", ", addressesNotValid)}.");
 
             var addressesAlreadyAdded = _databaseContext
-                .Mail
+                .EmailAddress
                 .Where(x => x.MailingGroupId == request.MailingGroupId)
-                .Where(x => request.Addresses.Contains(x.Address))
-                .Select(x=>x.Address)
+                .Where(x => request.Addresses.Contains(x.Value))
+                .Select(x=>x.Value)
                 .AsEnumerable();
 
             if (addressesAlreadyAdded.Any())
@@ -50,10 +50,10 @@ namespace Business.Handlers
 
             var addressesToAdd = request
                 .Addresses
-                .Select(emailAddress => new Mail()
+                .Select(emailAddress => new EmailAddress()
                 {
                     MailingGroupId = request.MailingGroupId,
-                    Address = emailAddress,
+                    Value = emailAddress,
                 })
                 .ToList();
 

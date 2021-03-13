@@ -41,36 +41,36 @@ namespace Business.Tests
                 Name = "MailingGroupName2",
                 SystemUserId = 2
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 1,
-                Address = "email1@address.com",
+                Value = "email1@address.com",
                 MailingGroupId = 2
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 2,
-                Address = "email2@address.com",
+                Value = "email2@address.com",
                 MailingGroupId = 2
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 3,
-                Address = "email3@address.com",
+                Value = "email3@address.com",
                 MailingGroupId = 2
             });
 
             databaseContext.SaveChanges();
 
-            var request = new CreateMailsRequest(mailingGroupId, emailAddressesList);
+            var request = new CreateEmailAddressRequest(mailingGroupId, emailAddressesList);
 
-            var result = await new CreateMailsHandler(databaseContext, emailAddressValidator).Handle(request, cancellationToken);
+            var result = await new CreateEmailAddressHandler(databaseContext, emailAddressValidator).Handle(request, cancellationToken);
 
             Assert.Multiple(() =>
             {
                 Assert.IsTrue(result.Success);
                 Assert.AreEqual(result.StatusCode, HttpStatusCode.Created);
-                Assert.AreEqual(databaseContext.Mail.Where(x => emailAddressesList.Contains(x.Address) && x.MailingGroupId == mailingGroupId).Count(), emailAddressesList.Count());
+                Assert.AreEqual(databaseContext.EmailAddress.Where(x => emailAddressesList.Contains(x.Value) && x.MailingGroupId == mailingGroupId).Count(), emailAddressesList.Count());
             });
         }
 
@@ -85,8 +85,8 @@ namespace Business.Tests
             var emailAddressValidator = Substitute.For<IEmailAddressValidatorUtility>();
             var databaseContext = Create.MockedDbContextFor<DatabaseContext>();
 
-            var request = new CreateMailsRequest(mailingGroupId, addressesList);
-            var result = await new CreateMailsHandler(databaseContext, emailAddressValidator).Handle(request, cancellationToken);
+            var request = new CreateEmailAddressRequest(mailingGroupId, addressesList);
+            var result = await new CreateEmailAddressHandler(databaseContext, emailAddressValidator).Handle(request, cancellationToken);
 
             Assert.Multiple(() =>
             {
@@ -117,18 +117,18 @@ namespace Business.Tests
                 Name = "MailingGroupName1",
                 SystemUserId = 1
             });
-            databaseContext.Set<Mail>().Add(new Mail()
+            databaseContext.Set<EmailAddress>().Add(new EmailAddress()
             {
                 Id = 1,
-                Address = "email2@address.com",
+                Value = "email2@address.com",
                 MailingGroupId = 1
                 
             });
             databaseContext.SaveChanges();
 
 
-            var request = new CreateMailsRequest(mailingGroupId, addressesList);
-            var result = await new CreateMailsHandler(databaseContext, emailAddressValidator).Handle(request, cancellationToken);
+            var request = new CreateEmailAddressRequest(mailingGroupId, addressesList);
+            var result = await new CreateEmailAddressHandler(databaseContext, emailAddressValidator).Handle(request, cancellationToken);
 
             Assert.Multiple(() =>
             {
@@ -148,8 +148,8 @@ namespace Business.Tests
             var emailAddressValidator = Substitute.For<IEmailAddressValidatorUtility>();
             var databaseContext = Create.MockedDbContextFor<DatabaseContext>();
 
-            var request = new CreateMailsRequest(mailingGroupId, addressesList);
-            var result = await new CreateMailsHandler(databaseContext, emailAddressValidator).Handle(request, cancellationToken);
+            var request = new CreateEmailAddressRequest(mailingGroupId, addressesList);
+            var result = await new CreateEmailAddressHandler(databaseContext, emailAddressValidator).Handle(request, cancellationToken);
 
             Assert.Multiple(() =>
             {

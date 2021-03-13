@@ -9,30 +9,30 @@ using System.Threading.Tasks;
 
 namespace Business.Handlers
 {
-    public class DeleteMailHandler : IRequestHandler<DeleteMailRequest, BasicResponseInfo>
+    public class DeleteEmailAddressHandler : IRequestHandler<DeleteEmailAddressRequest, BasicResponseInfo>
     {
         private readonly DatabaseContext _databaseContext;
 
-        public DeleteMailHandler(DatabaseContext databaseContext)
+        public DeleteEmailAddressHandler(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
         }
 
-        public async Task<BasicResponseInfo> Handle(DeleteMailRequest request, CancellationToken cancellationToken)
+        public async Task<BasicResponseInfo> Handle(DeleteEmailAddressRequest request, CancellationToken cancellationToken)
         {
             if(request.MailId == default(int))
                 return new BasicResponseInfo(false, HttpStatusCode.BadRequest, "Required email address.");
 
-            var mailToDelete = _databaseContext
-                .Mail
+            var emailAddressToDelete = _databaseContext
+                .EmailAddress
                 .Where(x => x.MailingGroup.SystemUserId == request.UserId)
                 .Where(x => x.Id == request.MailId)
                 .SingleOrDefault();
 
-            if (mailToDelete == null)
+            if (emailAddressToDelete == null)
                 return new BasicResponseInfo(false, HttpStatusCode.NotFound, "Email address not found.");
 
-            _databaseContext.Remove(mailToDelete);
+            _databaseContext.Remove(emailAddressToDelete);
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
 
             return new BasicResponseInfo(true, HttpStatusCode.OK, "Email address deleted.");

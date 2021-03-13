@@ -10,42 +10,42 @@ using System.Threading.Tasks;
 
 namespace Business.Handlers
 {
-    public class UpdateMailHandler : IRequestHandler<UpdateMailRequest, BasicResponseInfo>
+    public class UpdateEmailAddressHandler : IRequestHandler<UpdateEmailAddressRequest, BasicResponseInfo>
     {
         private readonly DatabaseContext _databaseContext;
         private readonly IEmailAddressValidatorUtility _emailAddressValidatorUtility;
 
-        public UpdateMailHandler(DatabaseContext databaseContext, 
+        public UpdateEmailAddressHandler(DatabaseContext databaseContext, 
             IEmailAddressValidatorUtility mailValidatorUtility)
         {
             _databaseContext = databaseContext;
             _emailAddressValidatorUtility = mailValidatorUtility;
         }
 
-        public async Task<BasicResponseInfo> Handle(UpdateMailRequest request, CancellationToken cancellationToken)
+        public async Task<BasicResponseInfo> Handle(UpdateEmailAddressRequest request, CancellationToken cancellationToken)
         {
             if (_emailAddressValidatorUtility.ValidateMail(request.Address))
                 return new BasicResponseInfo(false, HttpStatusCode.BadRequest, "Invalid email address.");
 
             var isAddressAlreadyExists = _databaseContext
-                .Mail
+                .EmailAddress
                 .Where(x => x.MailingGroup.SystemUserId == request.UserId)
-                .Where(x => x.Address == request.Address)
+                .Where(x => x.Value == request.Address)
                 .Any();
 
             if (isAddressAlreadyExists)
                 return new BasicResponseInfo(false, HttpStatusCode.Conflict, "Email address already exists.");
 
-            var mailToUpdate = _databaseContext
-                .Mail
+            var emailAddressToUpdate = _databaseContext
+                .EmailAddress
                 .Where(x => x.MailingGroup.SystemUserId == request.UserId)
                 .Where(x => x.Id == request.MailId)
                 .SingleOrDefault();
 
-            if(mailToUpdate == null)
+            if(emailAddressToUpdate == null)
                 return new BasicResponseInfo(false, HttpStatusCode.NotFound, "Email address not found.");
 
-            mailToUpdate.Address = request.Address;
+            emailAddressToUpdate.Value = request.Address;
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
 
             return new BasicResponseInfo(true, HttpStatusCode.OK, "Email address updated.");

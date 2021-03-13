@@ -9,7 +9,7 @@ namespace EF.SqlServer.Models
     {
         public MailingGroup()
         {
-            Mail = new HashSet<Mail>();
+            Mail = new HashSet<EmailAddress>();
         }
 
         public int Id { get; set; }
@@ -17,6 +17,6 @@ namespace EF.SqlServer.Models
         public int SystemUserId { get; set; }
 
         public virtual SystemUser SystemUser { get; set; }
-        public virtual ICollection<Mail> Mail { get; set; }
+        public virtual ICollection<EmailAddress> Mail { get; set; }
     }
 }

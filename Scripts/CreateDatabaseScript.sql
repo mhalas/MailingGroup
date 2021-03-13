@@ -24,13 +24,13 @@ CREATE TABLE MailingGroup.dbo.MailingGroup (
 )
 GO
 
-CREATE TABLE MailingGroup.dbo.Mail (
+CREATE TABLE MailingGroup.dbo.EmailAddress (
 	ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	Address NVARCHAR(256) NOT NULL,
+	Value NVARCHAR(256) NOT NULL,
 	MailingGroupID INT NOT NULL
 
 	FOREIGN KEY(MailingGroupID) REFERENCES MailingGroup(ID),
 
-	CONSTRAINT Unique_Mail UNIQUE (Address, MailingGroupID)
+	CONSTRAINT Unique_EmailAddress UNIQUE (Value, MailingGroupID)
 )
 GO

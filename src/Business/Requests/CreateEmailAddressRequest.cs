@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace Business.Requests
 {
-    public class CreateMailsRequest : IRequest<BasicResponseInfo>
+    public class CreateEmailAddressRequest : IRequest<BasicResponseInfo>
     {
 
-        public CreateMailsRequest(int mailingGroupId, IEnumerable<string> addresses)
+        public CreateEmailAddressRequest(int mailingGroupId, IEnumerable<string> addresses)
         {
             MailingGroupId = mailingGroupId;
             Addresses = addresses;

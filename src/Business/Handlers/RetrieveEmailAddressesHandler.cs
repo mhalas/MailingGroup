@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Business.Handlers
 {
-    public class RetrieveMailsHandler : IRequestHandler<RetrieveMailsRequest, RetrieveEmailAddressesResponse>
+    public class RetrieveEmailAddressesHandler : IRequestHandler<RetrieveMailsRequest, RetrieveEmailAddressesResponse>
     {
         private readonly DatabaseContext _databaseContext;
 
-        public RetrieveMailsHandler(DatabaseContext databaseContext)
+        public RetrieveEmailAddressesHandler(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
         }
@@ -22,7 +22,7 @@ namespace Business.Handlers
         public Task<RetrieveEmailAddressesResponse> Handle(RetrieveMailsRequest request, CancellationToken cancellationToken)
         {
             var query = _databaseContext
-                .Mail
+                .EmailAddress
                 .Where(x => x.MailingGroup.SystemUserId == request.UserId);
 
             if (request.MailingGroupId.HasValue)
@@ -30,7 +30,7 @@ namespace Business.Handlers
 
             var results = query
                 .ToList()
-                .Select(x => new RetrieveEmailAddressDto(x.Id, x.MailingGroupId, x.Address));
+                .Select(x => new RetrieveEmailAddressDto(x.Id, x.MailingGroupId, x.Value));
 
             return Task.FromResult(new RetrieveEmailAddressesResponse(true, 
                 HttpStatusCode.OK, 
