@@ -13,18 +13,18 @@ namespace Business.Handlers
     public class UpdateMailHandler : IRequestHandler<UpdateMailRequest, BasicResponseInfo>
     {
         private readonly DatabaseContext _databaseContext;
-        private readonly MailValidatorUtility _mailValidatorUtility;
+        private readonly EmailAddressValidatorUtility _emailAddressValidatorUtility;
 
         public UpdateMailHandler(DatabaseContext databaseContext, 
-            MailValidatorUtility mailValidatorUtility)
+            EmailAddressValidatorUtility mailValidatorUtility)
         {
             _databaseContext = databaseContext;
-            _mailValidatorUtility = mailValidatorUtility;
+            _emailAddressValidatorUtility = mailValidatorUtility;
         }
 
         public async Task<BasicResponseInfo> Handle(UpdateMailRequest request, CancellationToken cancellationToken)
         {
-            if (_mailValidatorUtility.ValidateMail(request.Address))
+            if (_emailAddressValidatorUtility.ValidateMail(request.Address))
                 return new BasicResponseInfo(false, HttpStatusCode.BadRequest, "Invalid email address.");
 
             var isAddressAlreadyExists = _databaseContext

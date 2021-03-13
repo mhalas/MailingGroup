@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
@@ -8,13 +10,11 @@ namespace EF.SqlServer.Models
     {
         public DatabaseContext()
         {
-
         }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
-
         }
 
         public virtual DbSet<Mail> Mail { get; set; }
@@ -27,6 +27,9 @@ namespace EF.SqlServer.Models
 
             modelBuilder.Entity<Mail>(entity =>
             {
+                entity.HasIndex(e => new { e.Address, e.MailingGroupId }, "Unique_Mail")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Address)
@@ -39,12 +42,15 @@ namespace EF.SqlServer.Models
                     .WithMany(p => p.Mail)
                     .HasForeignKey(d => d.MailingGroupId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Mail__MailingGro__286302EC");
+                    .HasConstraintName("FK__Mail__MailingGro__2B3F6F97");
             });
 
             modelBuilder.Entity<MailingGroup>(entity =>
             {
                 entity.ToTable("MailingGroup");
+
+                entity.HasIndex(e => new { e.Name, e.SystemUserId }, "Unique_MailingGroup")
+                    .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
@@ -58,23 +64,25 @@ namespace EF.SqlServer.Models
                     .WithMany(p => p.MailingGroups)
                     .HasForeignKey(d => d.SystemUserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__MailingGr__Syste__25869641");
+                    .HasConstraintName("FK__MailingGr__Syste__276EDEB3");
             });
 
             modelBuilder.Entity<SystemUser>(entity =>
             {
                 entity.ToTable("SystemUser");
 
+                entity.HasIndex(e => e.Username, "UQ__SystemUs__536C85E484561248")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Password).IsRequired();
 
+                entity.Property(e => e.Salt).IsRequired();
+
                 entity.Property(e => e.Username)
                     .IsRequired()
                     .HasMaxLength(50);
-
-                entity.Property(e => e.Salt)
-                    .IsRequired();
             });
 
             OnModelCreatingPartial(modelBuilder);

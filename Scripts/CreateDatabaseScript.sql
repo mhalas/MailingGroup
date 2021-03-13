@@ -7,7 +7,7 @@ GO
 
 CREATE TABLE MailingGroup.dbo.SystemUser (
 	ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	Username NVARCHAR(50)NOT NULL,
+	Username NVARCHAR(50)NOT NULL UNIQUE,
 	Password NVARCHAR(max) NOT NULL,
 	Salt VARBINARY(MAX) NOT NULL
 )
@@ -18,7 +18,9 @@ CREATE TABLE MailingGroup.dbo.MailingGroup (
 	Name NVARCHAR(250) NOT NULL,
 	SystemUserID INT NOT NULL,
 
-	FOREIGN KEY (SystemUserID) REFERENCES SystemUser(ID)
+	FOREIGN KEY (SystemUserID) REFERENCES SystemUser(ID),
+
+	CONSTRAINT Unique_MailingGroup UNIQUE (Name, SystemUserID)
 )
 GO
 
@@ -27,6 +29,8 @@ CREATE TABLE MailingGroup.dbo.Mail (
 	Address NVARCHAR(256) NOT NULL,
 	MailingGroupID INT NOT NULL
 
-	FOREIGN KEY(MailingGroupID) REFERENCES MailingGroup(ID)
+	FOREIGN KEY(MailingGroupID) REFERENCES MailingGroup(ID),
+
+	CONSTRAINT Unique_Mail UNIQUE (Address, MailingGroupID)
 )
 GO

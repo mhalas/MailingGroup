@@ -3,11 +3,10 @@
 namespace Utilities
 {
     /// <summary>
-    /// Useful Link
-    /// https://www.rfc-editor.org/errata/eid1690
+    /// I could use regex for validate email addresses, but 100% currect regex is unreadable.
+    /// http://www.ex-parrot.com/pdw/Mail-RFC822-Address.html
     /// </summary>
-    /// <returns></returns>
-    public class MailValidatorUtility
+    public class EmailAddressValidatorUtility
     {
         public bool ValidateMail(string emailAddress)
         {

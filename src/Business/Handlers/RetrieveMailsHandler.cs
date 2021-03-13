@@ -1,5 +1,5 @@
 ﻿using Business.Requests;
-using Contracts.Models;
+using Contracts.Dto;
 using EF.SqlServer.Models;
 using MediatR;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Business.Handlers
 {
-    public class RetrieveMailsHandler : IRequestHandler<RetrieveMailsRequest, IEnumerable<IMail>>
+    public class RetrieveMailsHandler : IRequestHandler<RetrieveMailsRequest, IEnumerable<RetrieveMailDto>>
     {
         private readonly DatabaseContext _databaseContext;
 
@@ -18,7 +18,7 @@ namespace Business.Handlers
             _databaseContext = databaseContext;
         }
 
-        public Task<IEnumerable<IMail>> Handle(RetrieveMailsRequest request, CancellationToken cancellationToken)
+        public Task<IEnumerable<RetrieveMailDto>> Handle(RetrieveMailsRequest request, CancellationToken cancellationToken)
         {
             var query = _databaseContext
                 .Mail
@@ -29,8 +29,7 @@ namespace Business.Handlers
 
             return Task.FromResult(query
                 .ToList()
-                .AsEnumerable()
-                .Cast<IMail>());
+                .Select(x=> new RetrieveMailDto(x.Id, x.MailingGroupId, x.Address)));
         }
     }
 }

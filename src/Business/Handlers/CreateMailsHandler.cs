@@ -14,18 +14,18 @@ namespace Business.Handlers
     public class CreateMailsHandler : IRequestHandler<CreateMailsRequest, BasicResponseInfo>
     {
         private readonly DatabaseContext _databaseContext;
-        private readonly MailValidatorUtility _mailValidatorUtility;
+        private readonly EmailAddressValidatorUtility _emailAddressValidatorUtility;
 
         public CreateMailsHandler(DatabaseContext databaseContext,
-            MailValidatorUtility mailValidatorUtility)
+            EmailAddressValidatorUtility mailValidatorUtility)
         {
             _databaseContext = databaseContext;
-            _mailValidatorUtility = mailValidatorUtility;
+            _emailAddressValidatorUtility = mailValidatorUtility;
         }
 
         public async Task<BasicResponseInfo> Handle(CreateMailsRequest request, CancellationToken cancellationToken)
         {
-            var addressesNotValid = request.Addresses.Where(x => !_mailValidatorUtility.ValidateMail(x));
+            var addressesNotValid = request.Addresses.Where(x => !_emailAddressValidatorUtility.ValidateMail(x));
             if (addressesNotValid.Any())
                 return new BasicResponseInfo(false,
                     HttpStatusCode.BadRequest,
