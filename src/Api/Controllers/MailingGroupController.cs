@@ -16,7 +16,6 @@ namespace Api.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class MailingGroupController : ControllerBase
     {
         private static ILogger Logger = LogManager.GetCurrentClassLogger();
@@ -44,6 +43,7 @@ namespace Api.Controllers
         /// <response code="201">Added new mailing group for logged user.</response>
         /// <response code="409">Mailing group with passed name already exists for logged user.</response>
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> CreateMailingGroup([FromBody]CreateMailingGroupRequest request)
@@ -83,6 +83,7 @@ namespace Api.Controllers
         /// <response code="404">Mailing group not found.</response>
         /// <response code="409">Mailing group with passed name already exists for logged user.</response>
         [HttpPut("{mailingGroupId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -123,6 +124,7 @@ namespace Api.Controllers
         /// <response code="200">Delete success.</response>
         /// <response code="404">Mailing group not found.</response>
         [HttpDelete("{mailingGroupId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteMailingGroup([FromRoute][Required] int mailingGroupId)
@@ -161,6 +163,7 @@ namespace Api.Controllers
         /// <returns></returns>
         /// <response code="200">Return mailing group list for logged user.</response>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> RetrieveMailingGroups()
         {

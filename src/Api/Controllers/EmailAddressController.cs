@@ -16,7 +16,6 @@ namespace Api.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class EmailAddressController : ControllerBase
     {
         private static ILogger Logger = LogManager.GetCurrentClassLogger();
@@ -44,6 +43,7 @@ namespace Api.Controllers
         /// <response code="400">Invalid email address.</response>
         /// <response code="409">Email address exists in mailing group.</response>
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -85,6 +85,7 @@ namespace Api.Controllers
         /// <response code="404">Email address not found.</response>
         /// <response code="409">Email address exists in mailing group.</response>
         [HttpPut("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -128,6 +129,7 @@ namespace Api.Controllers
         /// <response code="404">Email address not found.</response>
         /// <response code="409">Email address exists in mailing group.</response>
         [HttpDelete("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -167,6 +169,7 @@ namespace Api.Controllers
         /// <returns></returns>
         /// <response code="200">Return emailAddresses list.</response>
         [HttpGet("{mailingGroupId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> RetrieveEmailAddresses([FromRoute] int mailingGroupId)
         {
@@ -204,6 +207,7 @@ namespace Api.Controllers
         /// <returns></returns>
         /// <response code="200">Return emailAddresses list.</response>
         [HttpGet()]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> RetrieveEmailAddresses()
         {
