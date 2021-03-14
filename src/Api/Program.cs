@@ -1,11 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Api
 {
@@ -18,7 +13,6 @@ namespace Api
             Logger.Info("Starting API.");
 
             CreateHostBuilder(args).Build().Run();
-
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

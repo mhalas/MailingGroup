@@ -1,6 +1,6 @@
 using Business.IoC;
+using Contracts.Utility;
 using EF.SqlServer.Models;
-using Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,9 +9,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Contracts.Utility;
+using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Utilities;
 
 namespace Api
 {
@@ -23,10 +24,9 @@ namespace Api
         }
 
         public IConfiguration Configuration { get; }
-        
+
         /// <summary>
-        /// Information for recruiter:
-        /// In default ASP .NET Core has simple IoC container, but can also be used DryIoc container.
+        /// In default ASP .NET Core has simple IoC container, but can also be used DryIoc container as well.
         /// </summary>
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
@@ -35,10 +35,14 @@ namespace Api
                 .AddNewtonsoftJson();
 
             services.RegisterMediatR();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
+            });
 
             services.AddSingleton(Configuration);
             services.AddSingleton<ISaltGeneratorUtility, SaltGeneratorUtility>();
+            services.AddSingleton<IEmailAddressValidatorUtility, EmailAddressValidatorUtility>();
             services.AddSingleton<IUserPasswordUtility>(new UserPasswordUtility(int.Parse(Configuration["PasswordGenerator:Iterations"]), int.Parse(Configuration["PasswordGenerator:KeySize"])));
             services.AddSingleton<JwtSecurityTokenHandler>();
 
@@ -86,7 +90,6 @@ namespace Api
 
             app.UseAuthentication();
             app.UseAuthorization();
-            //app.UseMiddleware<AuthMiddleware>();
 
 
             app.UseEndpoints(endpoints =>
