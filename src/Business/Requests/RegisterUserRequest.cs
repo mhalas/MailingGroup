@@ -1,6 +1,7 @@
 ﻿using Contracts.Responses;
 using MediatR;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace Business.Requests
 {
@@ -12,10 +13,12 @@ namespace Business.Requests
             Password = password;
         }
 
+        [Required]
         [JsonProperty(Required = Required.Always)]
-        public string Username { get; }
+        public string Username { get; set; }
 
+        [Required]
         [JsonProperty(Required = Required.Always)]
-        public string Password { get; }
+        public string Password { get; set; }
     }
 }

@@ -33,8 +33,7 @@ namespace Business.Handlers
                 .Select(x => new RetrieveEmailAddressDto(x.Id, x.MailingGroupId, x.Value));
 
             return Task.FromResult(new RetrieveEmailAddressesResponse(true, 
-                HttpStatusCode.OK, 
-                string.Empty, 
+                HttpStatusCode.OK,
                 results));
         }
     }

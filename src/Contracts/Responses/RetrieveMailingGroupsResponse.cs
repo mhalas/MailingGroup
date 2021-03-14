@@ -6,8 +6,8 @@ namespace Contracts.Responses
 {
     public class RetrieveMailingGroupsResponse : BasicResponseInfo
     {
-        public RetrieveMailingGroupsResponse(bool success, HttpStatusCode statusCode, string message, IEnumerable<RetrieveMailingGroupDto> mailingGroups)
-            : base(success, statusCode, message)
+        public RetrieveMailingGroupsResponse(bool success, HttpStatusCode statusCode, IEnumerable<RetrieveMailingGroupDto> mailingGroups)
+            : base(success, statusCode)
         {
             MailingGroups = mailingGroups;
         }

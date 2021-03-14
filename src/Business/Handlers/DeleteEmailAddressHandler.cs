@@ -20,13 +20,13 @@ namespace Business.Handlers
 
         public async Task<BasicResponseInfo> Handle(DeleteEmailAddressRequest request, CancellationToken cancellationToken)
         {
-            if(request.MailId == default(int))
+            if(request.EmailAddressId == default(int))
                 return new BasicResponseInfo(false, HttpStatusCode.BadRequest, "Required email address.");
 
             var emailAddressToDelete = _databaseContext
                 .EmailAddress
                 .Where(x => x.MailingGroup.SystemUserId == request.UserId)
-                .Where(x => x.Id == request.MailId)
+                .Where(x => x.Id == request.EmailAddressId)
                 .SingleOrDefault();
 
             if (emailAddressToDelete == null)

@@ -28,7 +28,7 @@ namespace Business.Handlers
             .Select(x => new RetrieveMailingGroupDto(x.Id, x.Name))
             .AsEnumerable();
 
-            return Task.FromResult(new RetrieveMailingGroupsResponse(true, HttpStatusCode.OK, string.Empty, result));
+            return Task.FromResult(new RetrieveMailingGroupsResponse(true, HttpStatusCode.OK, result));
         }
     }
 }

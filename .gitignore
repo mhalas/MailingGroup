@@ -351,3 +351,4 @@ MigrationBackup/
 
 #Ignore appSettings.json from Api
 /src/Api/appsettings.json
+/src/Api/Api.xml

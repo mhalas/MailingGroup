@@ -2,6 +2,8 @@
 using MediatR;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace Business.Requests
 {
@@ -14,9 +16,12 @@ namespace Business.Requests
             Addresses = addresses;
         }
 
-        public int MailingGroupId { get; }
-
+        [Required]
         [JsonProperty(Required = Required.Always)]
-        public IEnumerable<string> Addresses { get; }
+        public int MailingGroupId { get; set; }
+
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public IEnumerable<string> Addresses { get; set; }
     }
 }

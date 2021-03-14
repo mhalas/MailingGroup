@@ -1,14 +1,19 @@
-﻿using Api.Extensions;
+﻿using Api.CustomRequests;
+using Api.Extensions;
 using Business.Handlers;
 using Business.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Api.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -23,9 +28,25 @@ namespace Api.Controllers
             _mediator = mediator;
         }
 
-
+        /// <summary>
+        /// Create new mailing group
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        /// POST /api/MailingGroup
+        /// {
+        ///     "name": "MySpamMailingGroup"
+        /// }
+        /// </remarks>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <response code="201">Added new mailing group for logged user.</response>
+        /// <response code="409">Mailing group with passed name already exists for logged user.</response>
         [HttpPost]
-        public IActionResult CreateMailingGroup(CreateMailingGroupRequest request)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<IActionResult> CreateMailingGroup([FromBody]CreateMailingGroupRequest request)
         {
             Logger.Trace($"Executing '{nameof(CreateMailingGroup)}'.");
 
@@ -37,8 +58,8 @@ namespace Api.Controllers
 
             try
             {
-                var id = _mediator.Send(request);
-                return new CreatedResult("", id);
+                var result = await _mediator.Send(request);
+                return result.GetResult();
             }
             catch (Exception ex)
             {
@@ -47,8 +68,25 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut]
-        public IActionResult UpdateMailingGroup(UpdateMailingGroupRequest request)
+        /// <summary>
+        /// Update existing user mailing group
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        /// PUT /api/MailingGroup/1337
+        /// {
+        ///     "name": "MySpamMailingGroup"
+        /// }
+        /// </remarks>
+        /// <response code="200">Update mailing group for logged user success.</response>
+        /// <response code="404">Mailing group not found.</response>
+        /// <response code="409">Mailing group with passed name already exists for logged user.</response>
+        [HttpPut("{mailingGroupId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<IActionResult> UpdateMailingGroup([FromRoute][Required] int mailingGroupId, [FromBody]UpdateMailingGroupDto dto)
         {
             Logger.Trace($"Executing '{nameof(UpdateMailingGroup)}'.");
 
@@ -56,12 +94,13 @@ namespace Api.Controllers
             if (userId == null)
                 return Unauthorized();
 
+            var request = new UpdateMailingGroupRequest(mailingGroupId, dto.Name);
             request.SetUserId(userId.Value);
 
             try
             {
-                var id = _mediator.Send(request);
-                return new OkResult();
+                var result = await _mediator.Send(request);
+                return result.GetResult();
             }
             catch (Exception ex)
             {
@@ -70,8 +109,23 @@ namespace Api.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult DeleteMailingGroup(DeleteMailingGroupRequest request)
+        /// <summary>
+        /// Delete existing user mailing group
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        /// DELETE /api/MailingGroup/1337
+        /// 
+        /// </remarks>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <response code="200">Delete success.</response>
+        /// <response code="404">Mailing group not found.</response>
+        [HttpDelete("{mailingGroupId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteMailingGroup([FromRoute][Required] int mailingGroupId)
         {
             Logger.Trace($"Executing '{nameof(DeleteMailingGroup)}'.");
 
@@ -79,12 +133,13 @@ namespace Api.Controllers
             if (userId == null)
                 return Unauthorized();
 
+            var request = new DeleteMailingGroupRequest(mailingGroupId);
             request.SetUserId(userId.Value);
 
             try
             {
-                var id = _mediator.Send(request);
-                return new OkResult();
+                var result = await _mediator.Send(request);
+                return result.GetResult();
             }
             catch (Exception ex)
             {
@@ -93,8 +148,21 @@ namespace Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Get existing user mailing groups
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        /// GET /api/MailingGroup
+        /// 
+        /// </remarks>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <response code="200">Return mailing group list for logged user.</response>
         [HttpGet]
-        public IActionResult RetrieveMailingGroups(RetrieveMailingGroupsRequest request)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> RetrieveMailingGroups()
         {
             Logger.Trace($"Executing '{nameof(RetrieveMailingGroups)}'.");
 
@@ -102,12 +170,13 @@ namespace Api.Controllers
             if (userId == null)
                 return Unauthorized();
 
+            var request = new RetrieveMailingGroupsRequest();
             request.SetUserId(userId.Value);
 
             try
             {
-                var result = _mediator.Send(request);
-                return new OkObjectResult(result);
+                var result = await _mediator.Send(request);
+                return result.GetResult();
             }
             catch (Exception ex)
             {

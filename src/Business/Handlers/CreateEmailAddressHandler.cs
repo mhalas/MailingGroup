@@ -61,10 +61,6 @@ namespace Business.Handlers
                 await _databaseContext.AddAsync(address).ConfigureAwait(false);
 
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
-
-            if (addressesAlreadyAdded.Any())
-                return new BasicResponseInfo(true, HttpStatusCode.Created, $"Success. Added addresses: {string.Join(", ", addressesToAdd)}, and ignored already added addresses: {string.Join(", ", addressesAlreadyAdded)}");
-
             return new BasicResponseInfo(true, HttpStatusCode.Created, $"Success.");
         }
     }

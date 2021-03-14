@@ -1,17 +1,19 @@
 ﻿using Contracts.Responses;
 using MediatR;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace Business.Requests
 {
     public class DeleteEmailAddressRequest : BaseRequest, IRequest<BasicResponseInfo>
     {
-        public DeleteEmailAddressRequest(int mailId)
+        public DeleteEmailAddressRequest(int emailAddressId)
         {
-            MailId = mailId;
+            EmailAddressId = emailAddressId;
         }
 
+        [Required]
         [JsonProperty(Required = Required.Always)]
-        public int MailId { get; }
+        public int EmailAddressId { get; set; }
     }
 }

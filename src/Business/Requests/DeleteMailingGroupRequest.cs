@@ -1,6 +1,7 @@
 ﻿using Contracts.Responses;
 using MediatR;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace Business.Requests
 {
@@ -11,7 +12,8 @@ namespace Business.Requests
             MailingGroupId = mailingGroupId;
         }
 
+        [Required]
         [JsonProperty(Required = Required.Always)]
-        public int MailingGroupId { get; }
+        public int MailingGroupId { get; set; }
     }
 }

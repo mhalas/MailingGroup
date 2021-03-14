@@ -24,7 +24,7 @@ namespace Business.Handlers
 
         public async Task<BasicResponseInfo> Handle(UpdateEmailAddressRequest request, CancellationToken cancellationToken)
         {
-            if (_emailAddressValidatorUtility.ValidateMail(request.Address))
+            if (!_emailAddressValidatorUtility.ValidateMail(request.Address))
                 return new BasicResponseInfo(false, HttpStatusCode.BadRequest, "Invalid email address.");
 
             var isAddressAlreadyExists = _databaseContext
@@ -39,7 +39,7 @@ namespace Business.Handlers
             var emailAddressToUpdate = _databaseContext
                 .EmailAddress
                 .Where(x => x.MailingGroup.SystemUserId == request.UserId)
-                .Where(x => x.Id == request.MailId)
+                .Where(x => x.Id == request.EmailAddressId)
                 .SingleOrDefault();
 
             if(emailAddressToUpdate == null)

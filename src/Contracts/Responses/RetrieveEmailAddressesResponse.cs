@@ -6,8 +6,8 @@ namespace Contracts.Responses
 {
     public class RetrieveEmailAddressesResponse : BasicResponseInfo
     {
-        public RetrieveEmailAddressesResponse(bool success, HttpStatusCode statusCode, string message, IEnumerable<RetrieveEmailAddressDto> emailAddresses) 
-            : base(success, statusCode, message)
+        public RetrieveEmailAddressesResponse(bool success, HttpStatusCode statusCode, IEnumerable<RetrieveEmailAddressDto> emailAddresses) 
+            : base(success, statusCode)
         {
             EmailAddresses = emailAddresses;
         }
