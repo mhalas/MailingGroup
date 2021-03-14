@@ -1,4 +1,5 @@
 ﻿using Contracts.Utility;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
 using System.Security.Cryptography;
 
@@ -17,19 +18,13 @@ namespace Utilities
 
         public string HashPassword(string passedPassword, byte[] userSalt)
         {
-            using (var algorithm = new Rfc2898DeriveBytes(passedPassword, userSalt, _iterations, HashAlgorithmName.SHA256))
-            {
-                var key = Convert.ToBase64String(algorithm.GetBytes(_keySize));
-                var salt = Convert.ToBase64String(algorithm.Salt);
-
-                return $"{key}{salt}";
-            }
+            var hashBytes = KeyDerivation.Pbkdf2(passedPassword, userSalt, KeyDerivationPrf.HMACSHA256, _iterations, _keySize);
+            return Convert.ToBase64String(hashBytes);
         }
 
         public bool IsPasswordCorrect(string passwordToBeCheck, byte[] userSalt, string storedUserPassword)
         {
             var checkingPasswordHash = HashPassword(passwordToBeCheck, userSalt);
-
             return checkingPasswordHash == storedUserPassword;
         }
     }
