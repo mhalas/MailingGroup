@@ -187,5 +187,45 @@ namespace Api.Controllers
                 throw;
             }
         }
+
+        /// <summary>
+        /// Get existing single user mailing group by ID
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        /// GET /api/MailingGroup/1337
+        /// 
+        /// </remarks>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <response code="200">Return mailing group list for logged user.</response>
+        /// <response code="404">Mailing group not found.</response>
+        [HttpGet("{mailingGroupId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> RetrieveSingleMailingGroup(int mailingGroupId)
+        {
+            Logger.Trace($"Executing '{nameof(RetrieveSingleMailingGroup)}'.");
+
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            var request = new RetrieveSingleMailingGroupRequest(mailingGroupId);
+            request.SetUserId(userId.Value);
+
+            try
+            {
+                var result = await _mediator.Send(request);
+                return result.GetResult();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, $"Unexpected error thrown while executing '{nameof(RetrieveMailingGroupsHandler)}'.");
+                throw;
+            }
+        }
     }
 }

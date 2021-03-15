@@ -12,6 +12,6 @@ namespace Contracts.Responses
             EmailAddresses = emailAddresses;
         }
 
-        public IEnumerable<RetrieveEmailAddressDto> EmailAddresses { get; set; }
+        public IEnumerable<RetrieveEmailAddressDto> EmailAddresses { get; }
     }
 }

@@ -147,7 +147,7 @@ namespace Api.Controllers
                 request.SetUserId(userId.Value);
 
                 var result = await _mediator.Send(request);
-                return new OkResult();
+                return result.GetResult();
             }
             catch (Exception ex)
             {
@@ -168,10 +168,10 @@ namespace Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         /// <response code="200">Return emailAddresses list.</response>
-        [HttpGet("{mailingGroupId}")]
+        [HttpGet]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> RetrieveEmailAddresses([FromRoute] int mailingGroupId)
+        public async Task<IActionResult> RetrieveEmailAddresses([FromQuery] int? mailingGroupId = null)
         {
             Logger.Trace($"Executing '{nameof(RetrieveEmailAddresses)}'.");
 
@@ -179,13 +179,13 @@ namespace Api.Controllers
             if (userId == null)
                 return Unauthorized();
 
-            var request = new RetrieveMailsRequest(mailingGroupId);
+            var request = new RetrieveEmailAddressesRequest(mailingGroupId);
             request.SetUserId(userId.Value);
 
             try
             {
                 var result = await _mediator.Send(request);
-                return new OkObjectResult(result);
+                return result.GetResult();
             }
             catch (Exception ex)
             {
@@ -206,24 +206,64 @@ namespace Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         /// <response code="200">Return emailAddresses list.</response>
-        [HttpGet()]
+        //[HttpGet]
+        //[Authorize]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //public async Task<IActionResult> RetrieveEmailAddresses()
+        //{
+        //    Logger.Trace($"Executing '{nameof(RetrieveEmailAddresses)}'.");
+
+        //    var userId = HttpContext.GetUserId();
+        //    if (userId == null)
+        //        return Unauthorized();
+
+        //    var request = new RetrieveEmailAddressesRequest(null);
+        //    request.SetUserId(userId.Value);
+
+        //    try
+        //    {
+        //        var result = await _mediator.Send(request);
+        //        return result.GetResult();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logger.Error(ex, $"Unexpected error thrown while executing '{nameof(RetrieveEmailAddressesHandler)}'.");
+        //        throw;
+        //    }
+        //}
+
+        /// <summary>
+        /// Get email address by ID
+        /// </summary>
+        /// <remarks>
+        /// Sample requests:
+        /// 
+        /// GET /api/EmailAddress/1
+        /// 
+        /// </remarks>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <response code="200">Return emailAddresses list.</response>
+        /// <response code="404">Email address not found.</response>
+        [HttpGet("{emailAddressId}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> RetrieveEmailAddresses()
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> RetrieveSingleEmailAddress([FromRoute] int emailAddressId)
         {
-            Logger.Trace($"Executing '{nameof(RetrieveEmailAddresses)}'.");
+            Logger.Trace($"Executing '{nameof(RetrieveSingleEmailAddress)}'.");
 
             var userId = HttpContext.GetUserId();
             if (userId == null)
                 return Unauthorized();
 
-            var request = new RetrieveMailsRequest(null);
+            var request = new RetrieveSingleEmailAddressRequest(emailAddressId);
             request.SetUserId(userId.Value);
 
             try
             {
                 var result = await _mediator.Send(request);
-                return new OkObjectResult(result);
+                return result.GetResult();
             }
             catch (Exception ex)
             {

@@ -3,9 +3,9 @@ using MediatR;
 
 namespace Business.Requests
 {
-    public class RetrieveMailsRequest : BaseRequest, IRequest<RetrieveEmailAddressesResponse>
+    public class RetrieveEmailAddressesRequest : BaseRequest, IRequest<RetrieveEmailAddressesResponse>
     {
-        public RetrieveMailsRequest(int? mailingGroupId)
+        public RetrieveEmailAddressesRequest(int? mailingGroupId)
         {
             MailingGroupId = mailingGroupId;
         }

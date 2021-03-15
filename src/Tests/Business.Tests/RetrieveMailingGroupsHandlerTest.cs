@@ -17,7 +17,7 @@ namespace Business.Tests
         [TestCase(2, 2)]
         [TestCase(3, 3)]
         [TestCase(4, 0)]
-        public async Task Should_ReturnOK_When_RetrievingEmailAddressesForUser(int userId, int counts)
+        public async Task Should_ReturnOK_When_RetrievingMailingGroupsForUser(int userId, int counts)
         {
             var cancellationToken = new CancellationToken();
 
