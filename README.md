@@ -21,12 +21,14 @@ This repository, is a sample of my knowledge and programming skills and the main
 - PUT       /api/MailingGroup/:mailingGroupId
 - DELETE    /api/MailingGroup/:mailingGroupId
 - GET       /api/MailingGroup
+- GET       /api/MailingGroup/:mailingGroupId
 
 3. Email address
 - POST      /api/EmailAddress
 - PUT       /api/EmailAddress/:emailAddressId
 - DELETE    /api/EmailAddress/:emailAddressId
 - GET       /api/EmailAddress
+- GET       /api/EmailAddress/:emailAddressId
 - GET       /api/EmailAddress?mailingGroupId={mailingGroupId}
 
 ## Postman request collection
