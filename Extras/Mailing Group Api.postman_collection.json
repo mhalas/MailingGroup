@@ -44,7 +44,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Address\": \"updatedemail@address.com\"\r\n}",
+							"raw": "{\r\n    \"Address\": \"updatedemail1@address.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -52,7 +52,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/EmailAddress/2",
+							"raw": "http://localhost:5000/api/EmailAddress/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -61,7 +61,7 @@
 							"path": [
 								"api",
 								"EmailAddress",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -73,7 +73,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/EmailAddress/3",
+							"raw": "http://localhost:5000/api/EmailAddress/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -82,7 +82,7 @@
 							"path": [
 								"api",
 								"EmailAddress",
-								"3"
+								"1"
 							]
 						}
 					},
@@ -109,12 +109,33 @@
 					"response": []
 				},
 				{
+					"name": "Get Single Item",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/EmailAddress/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"EmailAddress",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get from MailingGroup",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/EmailAddress?mailingGroupId=3",
+							"raw": "http://localhost:5000/api/EmailAddress?mailingGroupId=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -127,7 +148,7 @@
 							"query": [
 								{
 									"key": "mailingGroupId",
-									"value": "3"
+									"value": "1"
 								}
 							]
 						}
@@ -135,16 +156,6 @@
 					"response": []
 				}
 			],
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIxIiwianRpIjoiYzMwYjEwNWYtMDhmYy00NzY5LTgyNTAtYmI4MzdmOGZiYmZjIiwiZXhwIjoxNjE1NzMzMzQyLCJpc3MiOiJCZXN0TWFpbGluZ0dyb3VwQXBpRXZlci5jb20iLCJhdWQiOiJCZXN0TWFpbGluZ0dyb3VwQXBpRXZlci5jb20ifQ.FOCkhTqGhkKg3XVOGgBbYQ3Zhg5pimtB7-ouuEaeChQ",
-						"type": "string"
-					}
-				]
-			},
 			"event": [
 				{
 					"listen": "prerequest",
@@ -176,7 +187,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Name\": \"GroupName\"\r\n}",
+							"raw": "{\r\n    \"Name\": \"GroupName1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -213,7 +224,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/MailingGroup/2",
+							"raw": "http://localhost:5000/api/MailingGroup/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -222,7 +233,7 @@
 							"path": [
 								"api",
 								"MailingGroup",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -234,7 +245,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/MailingGroup/2",
+							"raw": "http://localhost:5000/api/MailingGroup/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -243,7 +254,7 @@
 							"path": [
 								"api",
 								"MailingGroup",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -268,18 +279,29 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get Single item",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/MailingGroup/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"MailingGroup",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
 			],
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIxIiwianRpIjoiYzMwYjEwNWYtMDhmYy00NzY5LTgyNTAtYmI4MzdmOGZiYmZjIiwiZXhwIjoxNjE1NzMzMzQyLCJpc3MiOiJCZXN0TWFpbGluZ0dyb3VwQXBpRXZlci5jb20iLCJhdWQiOiJCZXN0TWFpbGluZ0dyb3VwQXBpRXZlci5jb20ifQ.FOCkhTqGhkKg3XVOGgBbYQ3Zhg5pimtB7-ouuEaeChQ",
-						"type": "string"
-					}
-				]
-			},
 			"event": [
 				{
 					"listen": "prerequest",
@@ -311,7 +333,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"testUser\",\r\n    \"password\": \"password\"\r\n}",
+							"raw": "{\r\n    \"username\": \"username\",\r\n    \"password\": \"password\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -341,7 +363,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"testUser\",\r\n    \"password\": \"password\"\r\n}",
+							"raw": "{\r\n    \"username\": \"username\",\r\n    \"password\": \"password\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -365,6 +387,36 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIzIiwianRpIjoiNDE4NWJhNGEtYWFkNS00MWY2LTg2YzUtMmZkNmU0MmI4ZTkwIiwiZXhwIjoxNjE1ODEzMDk3LCJpc3MiOiJCZXN0TWFpbGluZ0dyb3VwQXBpRXZlci5jb20iLCJhdWQiOiJCZXN0TWFpbGluZ0dyb3VwQXBpRXZlci5jb20ifQ.PArcp68D9_NwM76jDFePCfEHFLkAf-7bcn6ELbNxL-o",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
